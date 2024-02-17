@@ -10,10 +10,10 @@ defaults:
     working-directory: backend
 
 jobs:
-  frontend-test:
+  backend-test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-        - run: echo "This is backend."
+      - run: echo "This is backend."
