@@ -15,5 +15,4 @@ if [ "$FRONT_MODE" = "development" ]; then
 elif [ "$FRONT_MODE" = "build" ]; then
     quasar build -m $FRONT_TYPE
 elif [ "$FRONT_MODE" = "test" ]; then
-    quasar test -m $FRONT_TYPE
-fi
+    yarn test:e2e:ci

@@ -16,4 +16,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - run: echo "This is frontend."
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20.x'
+
+      - name: prepare for test
+        run: |
+          yarn install
+
+      - name: Run test
+        run: |
+          yarn test:e2e:ci
