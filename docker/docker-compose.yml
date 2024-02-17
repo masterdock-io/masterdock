@@ -1,0 +1,109 @@
+version: "3"
+
+services:
+  pgsql:
+    build:
+      context: pgsql/.
+      args:
+        - SYS_LOCALE=${SYS_LOCALE}
+        - SYS_CHARSET=${SYS_CHARSET}
+        - SYS_TIMEZONE=${SYS_TIMEZONE}
+    image: ${PGSQL_IMAGE_TAG}
+    container_name: masterdock_db
+    command: -c 'config_file=/etc/postgresql/conf/postgresql.conf'
+    environment:
+      POSTGRES_PASSWORD: ${PGSQL_ROOT_PASSWORD}
+      POSTGRES_USER: ${PGSQL_USER}
+      POSTGRES_DB: ${PGSQL_DB}
+    ports:
+      - 5432:${PGSQL_PORT}
+    volumes:
+      - ${PGSQL_HOST_DATA_DIR}:/var/lib/postgresql/data
+      - ${PGSQL_HOST_CONF_DIR}:/etc/postgresql/conf
+      - ${PGSQL_HOST_INITDB_DIR}:/docker-entrypoint-initdb.d
+    networks:
+      default:
+        ipv4_address: ${PGSQL_IP}
+
+  mailhog:
+    image: mailhog/mailhog
+    container_name: mailhog
+    logging:
+      driver: 'none'  # disable saving logs
+    ports:
+      - 1025:1025 # smtp server
+      - 8025:8025 # web ui
+    environment:
+      MH_STORAGE: maildir
+      MH_MAILDIR_PATH: /home/mailhog
+    volumes:
+      - ${MAILHOG_LOCAL_DIR}:/home/mailhog
+    networks:
+      default:
+        ipv4_address: ${MAILHOG_IP}
+
+  frontend:
+    build:
+      context: frontend/.
+      args:
+        - SYS_LOCALE=${SYS_LOCALE}
+        - SYS_CHARSET=${SYS_CHARSET}
+        - SYS_TIMEZONE=${SYS_TIMEZONE}
+        - FRONT_USER=${FRONT_USER}
+        - FRONT_USER_ID=${FRONT_USER_ID}
+        - FRONT_GROUP=${FRONT_GROUP}
+        - FRONT_GROUP_ID=${FRONT_GROUP_ID}
+        - FRONT_USER_PASSWORD=${FRONT_USER_PASSWORD}
+        - FRONT_PATH=${FRONT_PATH}
+    image: ${FRONT_IMAGE_TAG}
+    container_name: masterdock_frontend
+    environment:
+      FRONT_MODE: ${FRONT_MODE}
+      FRONT_TYPE: ${FRONT_TYPE}
+      FRONT_PATH: ${FRONT_PATH}
+      CYPRESS_KEY: ${CYPRESS_KEY}
+    ports:
+      - ${FRONT_HOST_PORT}:${FRONT_PORT}
+      - ${FRONT_PORT}:${FRONT_PORT} # for watch files on development mode
+    volumes:
+      - ${FRONT_HOST_PATH}:${FRONT_PATH}
+    #command: /bin/sh -c "while :; do sleep 10; done"
+    entrypoint:
+      - /home/${FRONT_USER}/entrypoint.sh
+    networks:
+      default:
+        ipv4_address: ${FRONTEND_IP}
+
+  backend:
+    build:
+      context: backend/.
+      args:
+        - SYS_LOCALE=${SYS_LOCALE}
+        - SYS_CHARSET=${SYS_CHARSET}
+        - SYS_TIMEZONE=${SYS_TIMEZONE}
+        - BACKEND_USER=${BACKEND_USER}
+        - BACKEND_USER_ID=${BACKEND_USER_ID}
+        - BACKEND_GROUP=${BACKEND_GROUP}
+        - BACKEND_GROUP_ID=${BACKEND_GROUP_ID}
+        - BACKEND_USER_PASSWORD=${BACKEND_USER_PASSWORD}
+        - BACKEND_PATH=${BACKEND_PATH}
+    image: ${BACKEND_IMAGE_TAG}
+    container_name: masterdock_backend
+    environment:
+      BACKEND_MODE: ${BACKEND_MODE}
+      BACKEND_PATH: ${BACKEND_PATH}
+    ports:
+      - ${BACKEND_HOST_PORT}:${BACKEND_PORT}
+    volumes:
+      - ${BACKEND_HOST_PATH}:${BACKEND_PATH}
+    #command: /bin/sh -c "while :; do sleep 10; done"
+    entrypoint:
+      - /home/${BACKEND_USER}/entrypoint.sh
+    networks:
+      default:
+        ipv4_address: ${BACKEND_IP}
+
+networks:
+  default:
+    external: true
+    name: ${NETWORK_NAME}
