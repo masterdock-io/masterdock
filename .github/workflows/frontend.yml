@@ -10,7 +10,7 @@ defaults:
     working-directory: frontend
 
 env:
-  CYPRESS_KEY: ${{vars.CYPRESS_KEY}}
+  CYPRESS_KEY: ${{vars.CYPRESS}}
 
 jobs:
   frontend-test:
@@ -30,4 +30,8 @@ jobs:
 
       - name: Run test
         run: |
-          yarn test:e2e:ci:record
+          if [ $CYPRESS_KEY == "" ]; then
+            yarn test:e2e:ci
+          else
+            yarn test:e2e:ci:record
+          fi
