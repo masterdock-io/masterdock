@@ -27,4 +27,4 @@ jobs:
 
       - name: Run test
         run: |
-          yarn test:e2e:ci
+          yarn test:e2e:ci:record
