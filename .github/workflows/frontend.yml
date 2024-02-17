@@ -10,7 +10,7 @@ defaults:
     working-directory: frontend
 
 env:
-  CYPRESS_KEY: ${{vars.CYPRESS}}
+  CYPRESS_KEY: ${{vars.CYPRESS_KEY}}
 
 jobs:
   frontend-test:
