@@ -1,0 +1,16 @@
+name: masterdock frontend e2e test
+
+on:
+  push:
+    paths:
+      - 'frontend/**'
+
+defaults:
+  run:
+    working-directory: frontend
+
+jobs:
+  frontend-test:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "This is frontend."
