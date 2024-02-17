@@ -13,4 +13,7 @@ jobs:
   frontend-test:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
       - run: echo "This is frontend."
