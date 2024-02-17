@@ -30,7 +30,7 @@ jobs:
 
       - name: Run test
         run: |
-          if [ $CYPRESS_KEY == "" ]; then
+          if [ "${{ env.CYPRESS_KEY }}" == "" ]; then
             yarn test:e2e:ci
           else
             yarn test:e2e:ci:record
