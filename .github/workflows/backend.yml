@@ -16,4 +16,5 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - run: echo "This is backend."
+      - name: Run test
+        run: pytest
