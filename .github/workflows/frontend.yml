@@ -24,6 +24,9 @@ jobs:
         with:
           node-version: '20.x'
 
+      - name: Install yarn
+        run: corepack enable
+
       - name: prepare for test
         run: |
           yarn install
