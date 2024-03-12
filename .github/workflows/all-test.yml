@@ -9,7 +9,7 @@ on:
       - main
 
 jobs:
-  get_changed_files:
+  all-test:
     runs-on: self-hosted
     steps:
       - name: Checkout
@@ -22,6 +22,7 @@ jobs:
           files: frontend/**
 
       - name: Set env value for frontend
+        if: steps.changed-files-frontend.outputs.all_changed_and_modified_files_count != 0
         env:
           FRONTEND_CHANGED_COUNT: ${{ steps.changed-files-frontend.outputs.all_changed_and_modified_files_count }}
         run: |
@@ -34,8 +35,10 @@ jobs:
           files: backend/**
   
       - name: Set env value for backend
+        if: steps.changed-files-backend.outputs.all_changed_and_modified_files_count != 0
         env:
           BACKEND_CHANGED_COUNT: ${{ steps.changed-files-backend.outputs.all_changed_and_modified_files_count }}
         run: |
           echo "BACKEND: $BACKEND_CHANGED_COUNT"
+
   
