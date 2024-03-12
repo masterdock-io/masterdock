@@ -11,6 +11,9 @@ jobs:
   backend-test:
     runs-on: self-hosted
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
       - name: Prepare for test
         run: |
           python -m pip install --upgrade pip

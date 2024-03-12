@@ -25,7 +25,7 @@ jobs:
         if: steps.changed-files-frontend.outputs.all_changed_and_modified_files_count != 0
         env:
           FRONTEND_CHANGED_COUNT: ${{ steps.changed-files-frontend.outputs.all_changed_and_modified_files_count }}
-        uses: ./.github/workflows/frontend.yml
+        uses: ./.github/workflows/frontend
       
       - name: Not Test Frontend
         if: steps.changed-files-frontend.outputs.all_changed_and_modified_files_count == 0
@@ -42,7 +42,7 @@ jobs:
         if: steps.changed-files-backend.outputs.all_changed_and_modified_files_count != 0
         env:
           BACKEND_CHANGED_COUNT: ${{ steps.changed-files-backend.outputs.all_changed_and_modified_files_count }}
-        uses: ./.github/workflows/backend.yml
+        uses: ./.github/workflows/backend
 
       - name: Not Test Backend
         if: steps.changed-files-backend.outputs.all_changed_and_modified_files_count == 0
