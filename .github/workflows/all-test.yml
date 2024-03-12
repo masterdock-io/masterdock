@@ -36,6 +36,13 @@ jobs:
           FRONTEND_CHANGED_COUNT: ${{ steps.changed-files-frontend.outputs.all_changed_and_modified_files_count }}
         run: |
           echo "FRONTEND: $FRONTEND_CHANGED_COUNT"
+          corepack enable
+          yarn install
+          if [ "${{ env.CYPRESS_KEY }}" == "" ]; then
+            yarn test:e2e:ci
+          else
+            yarn test:e2e:ci:record
+          fi
 
       - name: Not Test Frontend
         if: steps.changed-files-frontend.outputs.all_changed_and_modified_files_count == 0
