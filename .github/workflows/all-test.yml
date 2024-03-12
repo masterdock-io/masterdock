@@ -35,7 +35,7 @@ jobs:
   
       - name: Set env value for backend
         env:
-          BACKEND_CHANGED_COUNT: ${{ steps.changed-files-frontend.outputs.all_changed_and_modified_files_count }}
+          BACKEND_CHANGED_COUNT: ${{ steps.changed-files-backend.outputs.all_changed_and_modified_files_count }}
         run: |
           echo "BACKEND: $BACKEND_CHANGED_COUNT"
   
