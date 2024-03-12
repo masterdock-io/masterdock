@@ -1,0 +1,41 @@
+name: for all testing (frontend e2e and backend unit testing).
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  get_changed_files:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Get changed files in the frontend folder
+        id: changed-files-frontend
+        uses: tj-actions/changed-files@v42
+        with:
+          files: fontend/**
+
+      - name: Set env value for frontend
+        env:
+          FRONTEND_CHANGED_COUNT: ${{ steps.changed-files-frontend.outputs.all_changed_and_modified_files_count }}
+        run: |
+          echo "FRONTEND: $FRONTEND_CHANGED_COUNT"
+
+      - name: Get changed files in the backend folder
+        id: changed-files-backend
+        uses: tj-actions/changed-files@v42
+        with:
+          files: backend/**
+  
+      - name: Set env value for backend
+        env:
+          BACKEND_CHANGED_COUNT: ${{ steps.changed-files-frontend.outputs.all_changed_and_modified_files_count }}
+        run: |
+          echo "FRONTEND: $BACKEND_CHANGED_COUNT"
+  
