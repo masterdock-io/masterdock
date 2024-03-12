@@ -21,12 +21,17 @@ jobs:
         with:
           files: frontend/**
 
-      - name: Set env value for frontend
+      - name: Test Frontend
         if: steps.changed-files-frontend.outputs.all_changed_and_modified_files_count != 0
         env:
           FRONTEND_CHANGED_COUNT: ${{ steps.changed-files-frontend.outputs.all_changed_and_modified_files_count }}
         run: |
           echo "FRONTEND: $FRONTEND_CHANGED_COUNT"
+      
+      - name: Not Test Frontend
+        if: steps.changed-files-frontend.outputs.all_changed_and_modified_files_count == 0
+        run: |
+          echo "FRONTEND: NOT CHANGED..."
 
       - name: Get changed files in the backend folder
         id: changed-files-backend
@@ -34,11 +39,16 @@ jobs:
         with:
           files: backend/**
   
-      - name: Set env value for backend
+      - name: Test Backend
         if: steps.changed-files-backend.outputs.all_changed_and_modified_files_count != 0
         env:
           BACKEND_CHANGED_COUNT: ${{ steps.changed-files-backend.outputs.all_changed_and_modified_files_count }}
         run: |
           echo "BACKEND: $BACKEND_CHANGED_COUNT"
 
+      - name: Not Test Backend
+        if: steps.changed-files-backend.outputs.all_changed_and_modified_files_count == 0
+        run: |
+          echo "BACKEND: NOT CHANGED..."
+  
   
