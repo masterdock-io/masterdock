@@ -1,6 +1,9 @@
 name: for all testing (frontend e2e and backend unit testing).
 
 on:
+  push:
+    branches:
+      - main
   pull_request:
     branches:
       - main
